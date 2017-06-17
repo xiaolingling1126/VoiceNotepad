@@ -34,12 +34,12 @@ class RecordManager {
             } catch let err {
                 print("初始化动作失败:\(err.localizedDescription)")
             }
-            //录音设置，注意，后面需要转换成NSNumber，如果不转换，你会发现，无法录制音频文件，我猜测是因为底层还是用OC写的原因
-            let recordSetting: [String: Any] = [AVSampleRateKey: NSNumber(value: 16000),//采样率
-                AVFormatIDKey: NSNumber(value: kAudioFormatLinearPCM),//音频格式
-                AVLinearPCMBitDepthKey: NSNumber(value: 16),//采样位数
-                AVNumberOfChannelsKey: NSNumber(value: 1),//通道数
-                AVEncoderAudioQualityKey: NSNumber(value: AVAudioQuality.min.rawValue)//录音质量
+            
+            let recordSetting: [String: Any] = [AVSampleRateKey: NSNumber(value: 16000),
+                AVFormatIDKey: NSNumber(value: kAudioFormatLinearPCM),
+                AVLinearPCMBitDepthKey: NSNumber(value: 16),
+                AVNumberOfChannelsKey: NSNumber(value: 1),
+                AVEncoderAudioQualityKey: NSNumber(value: AVAudioQuality.min.rawValue)
             ];
             //开始录音
             do {

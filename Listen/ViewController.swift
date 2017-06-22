@@ -11,10 +11,27 @@ import UIKit
 class ViewController: UIViewController {
   
     lazy var recoder_manager: RecordManager = {
-         let recoder_manager = RecordManager()//初始化
+         let recoder_manager = RecordManager()
         return recoder_manager
     }()
     
+    lazy var beginBtn: UIButton = {
+        let beginBtn = UIButton.init(type: UIButtonType.custom)
+        beginBtn.setImage(UIImage.init(named: "recordbg"), for: .normal)
+        let longPress = UILongPressGestureRecognizer.init(target: self, action: #selector(longPressActioin))
+        beginBtn.addGestureRecognizer(longPress)
+
+        return beginBtn
+    }()
+
+    lazy var playBtn: UIButton = {
+        let playBtn = UIButton.init(type: UIButtonType.custom)
+        playBtn.setTitle("播放录音", for: .normal)
+        playBtn.setImage(UIImage.init(named: "start"), for: .normal)
+        playBtn.addTarget(self, action: #selector(playAction), for: UIControlEvents.touchUpInside)
+
+        return playBtn
+    }()
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -28,30 +45,43 @@ class ViewController: UIViewController {
         rightBtn.addTarget(self, action: #selector(rightBtnAction), for: UIControlEvents.touchUpInside)
         let rightBtnItem = UIBarButtonItem.init(customView: rightBtn)
         self.navigationItem.rightBarButtonItem = rightBtnItem;
-
-        let beginBtn = UIButton.init(type: UIButtonType.custom)
-        beginBtn.setTitle("开始录音", for: .normal)
-        beginBtn.backgroundColor = UIColor.red
-        beginBtn.addTarget(self, action: #selector(beginction), for: UIControlEvents.touchUpInside)
-        beginBtn.frame = CGRect.init(x: 100, y: 100, width: 100, height: 50)
-        self.view.addSubview(beginBtn)
         
-        let stopBtn = UIButton.init(type: UIButtonType.custom)
-        stopBtn.setTitle("结束录音", for: .normal)
-        stopBtn.backgroundColor = UIColor.red
-        stopBtn.addTarget(self, action: #selector(stopAction), for: UIControlEvents.touchUpInside)
-        stopBtn.frame = CGRect.init(x: 100, y: 200, width: 100, height: 50)
-        self.view.addSubview(stopBtn)
-        
-        let playBtn = UIButton.init(type: UIButtonType.custom)
-        playBtn.setTitle("播放录音", for: .normal)
-        playBtn.backgroundColor = UIColor.red
-        playBtn.addTarget(self, action: #selector(playAction), for: UIControlEvents.touchUpInside)
-        playBtn.frame = CGRect.init(x: 100, y: 300, width: 100, height: 50)
-        self.view.addSubview(playBtn)
-        
+        setupViews()
+        setupFrames()
     }
     
+    func longPressActioin(sender: UILongPressGestureRecognizer)  {
+
+        if sender.state == .began{
+            recoder_manager.beginRecord()
+            print("长按开始")
+        }else if sender.state == .ended{
+            recoder_manager.stopRecord()
+            print("长按结束")
+        }
+    }
+    
+    func setupViews()  {
+        self.view.addSubview(beginBtn)
+        self.view.addSubview(playBtn)
+    }
+    
+    func setupFrames()  {
+        
+        beginBtn.snp.makeConstraints { (make) in
+            make.top.equalTo(100)
+            make.width.equalTo(40)
+            make.height.equalTo(40)
+            make.centerX.equalToSuperview()
+        }
+
+        playBtn.snp.makeConstraints { (make) in
+            make.centerX.equalToSuperview()
+            make.top.equalTo(beginBtn.snp.bottom).offset(100)
+            make.width.equalTo(40)
+            make.height.equalTo(40)
+        }
+    }
     func beginction() {
         
          recoder_manager.beginRecord()
@@ -61,9 +91,11 @@ class ViewController: UIViewController {
         recoder_manager.stopRecord()
     }
     func playAction() {
-//        recoder_manager.play()
-        recoder_manager.play(index: recoder_manager.recorders.count - 1)
+        if recoder_manager.recorders.count > 0 {
+            recoder_manager.play(index: recoder_manager.recorders.count - 1)
+        }
     }
+    
     func rightBtnAction()  {
         let ctrl = VoicesViewController()
         ctrl.manager = self.recoder_manager

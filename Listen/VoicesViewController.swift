@@ -9,14 +9,16 @@
 import UIKit
 
 class VoicesViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
+    
+    //[(index, isSelected)]
+    var manager = RecordManager()
+    var dataSource: [(Int, Bool)] = []
+    
     lazy var tableView: UITableView = {
        let tableView = UITableView.init()
         tableView.backgroundColor = UIColor.white
         return tableView
     }()
-    
-    var manager = RecordManager()
-   
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,57 +28,104 @@ class VoicesViewController: UIViewController,UITableViewDelegate,UITableViewData
         tableView.register(VoicesCell.self, forCellReuseIdentifier: "VoicesCellIndefier")
         tableView.tableFooterView = UIView.init(frame: CGRect.zero)
         self.view.addSubview(tableView)
-        tableView.frame = CGRect.init(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+        tableView.snp.makeConstraints { (make) in
+            make.edges.equalToSuperview()
+        }
+        //初始化datasource
+        for (index, _) in manager.recorders.enumerated() {
+            dataSource.append((index, false))
+        }
     }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "VoicesCellIndefier", for: indexPath) as! VoicesCell
-        cell.configItem()
+        cell.configItem(item: dataSource[indexPath.row])
         return cell
-        
     }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        self.manager.play(index: indexPath.row)
+        
+        dataSource = dataSource.map { element -> (Int, Bool) in
+            if element.0 == indexPath.row {
+                return (element.0, !element.1)
+            }
+            return (element.0, element.1)
+        }
+        
+        let item = dataSource[indexPath.row]
+        if item.1 {
+            self.manager.play(index: indexPath.row)
+        } else {
+            self.manager.stopPlay()
+        }
+        let cell  = tableView.cellForRow(at: indexPath) as! VoicesCell
+        cell.palyButton.isSelected = item.1
     }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.manager.recorders.count
+        return dataSource.count
     }
   
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
     }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
 }
 
-
+import SnapKit
 class VoicesCell: UITableViewCell {
+   
     lazy var nameLab: UILabel = {
         let label = UILabel.init()
         return label
     }()
     lazy var palyButton: UIButton = {
        let button = UIButton.init(type: UIButtonType.custom)
-        button.setTitle("播放录音", for: .normal)
         button.setTitleColor(UIColor.red, for: .normal)
+        button.titleLabel?.textAlignment = .right
+        button.isUserInteractionEnabled = false
+        button.setImage(UIImage.init(named: "start"), for: .normal)
+         button.setImage(UIImage.init(named: "pause"), for: .selected)
         return button
     }()
+    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
+    
     override init(style: UITableViewCellStyle,reuseIdentifier:String?){
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupViews()
+        setupFrame()
     }
+    
     func setupViews()  {
-        nameLab.frame = CGRect.init(x: 10, y: 10, width: UIScreen.main.bounds.width - 120, height: 40)
-        palyButton.frame = CGRect.init(x: UIScreen.main.bounds.width - 110, y: 10, width: 100, height: 40)
         self.contentView.addSubview(nameLab)
         self.contentView.addSubview(palyButton)
     }
-    func configItem() {
-        nameLab.text = "录音名字"
+    
+    func setupFrame()  {
+        
+        nameLab.snp.makeConstraints { (make) in
+            make.top.equalTo(10)
+            make.left.equalTo(10)
+            make.height.equalTo(40)
+        }
+        palyButton.snp.makeConstraints { (make) in
+            make.top.equalTo(15)
+            make.right.equalTo(-10)
+            make.width.equalTo(30)
+            make.height.equalTo(30)
+        }
+    }
+    
+    func configItem(item: (Int, Bool)) {
+        nameLab.text = "录音名字" + "\(item.0)"
+        palyButton.isSelected = item.1
     }
 }

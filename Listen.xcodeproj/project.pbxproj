@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		08BFF920F9FBEE039989CB9F /* Pods_Listen.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A762C30CB852D2B0FED7CC53 /* Pods_Listen.framework */; };
 		FDB7927D1EF5019100933229 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDB7927C1EF5019100933229 /* AppDelegate.swift */; };
 		FDB7927F1EF5019100933229 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDB7927E1EF5019100933229 /* ViewController.swift */; };
 		FDB792821EF5019100933229 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FDB792801EF5019100933229 /* Main.storyboard */; };
@@ -17,6 +18,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		06CE9B5F062A59398FA2C2E7 /* Pods-Listen.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Listen.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Listen/Pods-Listen.debug.xcconfig"; sourceTree = "<group>"; };
+		A762C30CB852D2B0FED7CC53 /* Pods_Listen.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Listen.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C9073EC1708CB72FB5FD7E8F /* Pods-Listen.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Listen.release.xcconfig"; path = "Pods/Target Support Files/Pods-Listen/Pods-Listen.release.xcconfig"; sourceTree = "<group>"; };
 		FDB792791EF5019100933229 /* Listen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Listen.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FDB7927C1EF5019100933229 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FDB7927E1EF5019100933229 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -33,17 +37,37 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				08BFF920F9FBEE039989CB9F /* Pods_Listen.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		31419A7CDF18C5960C3F63CC /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A762C30CB852D2B0FED7CC53 /* Pods_Listen.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		48E740A1CC8E918D763D6268 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				06CE9B5F062A59398FA2C2E7 /* Pods-Listen.debug.xcconfig */,
+				C9073EC1708CB72FB5FD7E8F /* Pods-Listen.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		FDB792701EF5019100933229 = {
 			isa = PBXGroup;
 			children = (
 				FDB7927B1EF5019100933229 /* Listen */,
 				FDB7927A1EF5019100933229 /* Products */,
+				48E740A1CC8E918D763D6268 /* Pods */,
+				31419A7CDF18C5960C3F63CC /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -77,9 +101,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = FDB7928B1EF5019100933229 /* Build configuration list for PBXNativeTarget "Listen" */;
 			buildPhases = (
+				1D537E4F136BF3E7A5B2F8A2 /* [CP] Check Pods Manifest.lock */,
 				FDB792751EF5019100933229 /* Sources */,
 				FDB792761EF5019100933229 /* Frameworks */,
 				FDB792771EF5019100933229 /* Resources */,
+				92DDB831DF78B47A5E82504A /* [CP] Embed Pods Frameworks */,
+				EC1438AB211CFA6689AC5D4E /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -137,6 +164,54 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		1D537E4F136BF3E7A5B2F8A2 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		92DDB831DF78B47A5E82504A /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Listen/Pods-Listen-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		EC1438AB211CFA6689AC5D4E /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Listen/Pods-Listen-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		FDB792751EF5019100933229 /* Sources */ = {
@@ -265,6 +340,7 @@
 		};
 		FDB7928C1EF5019100933229 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 06CE9B5F062A59398FA2C2E7 /* Pods-Listen.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 464A59D8Y9;
@@ -278,6 +354,7 @@
 		};
 		FDB7928D1EF5019100933229 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C9073EC1708CB72FB5FD7E8F /* Pods-Listen.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 464A59D8Y9;

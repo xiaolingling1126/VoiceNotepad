@@ -15,8 +15,10 @@ class RecordManager {
         
         var recorder: AVAudioRecorder?
         var player: AVAudioPlayer?
-        let file_path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first?.appending("/record.wav")
+        var file_path = " "
         var recorders = [String]()
+        var recordCoubt = 0
+    
     
     
         //开始录音
@@ -43,8 +45,14 @@ class RecordManager {
             ];
             //开始录音
             do {
-                let url = URL(fileURLWithPath: file_path!)
-                 recorders.append(file_path!)
+                
+                recordCoubt = recordCoubt + 1
+                file_path = (NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first?.appending("/record"))!
+                file_path = file_path.appending(recordCoubt.description + ".wav")
+                
+                let url = URL(fileURLWithPath: file_path)
+                recorders.append(file_path)
+
                 recorder = try AVAudioRecorder(url: url, settings: recordSetting)
                 recorder!.prepareToRecord()
                 recorder!.record()
@@ -58,9 +66,8 @@ class RecordManager {
         func stopRecord() {
             if let recorder = self.recorder {
                 if recorder.isRecording {
-//                    recorders.append(file_path!)
-//                    print(recorders)
-                    print("正在录音，马上结束它，文件保存到了：\(file_path!)")
+                    print("正在录音，马上结束它，文件保存到了：\(file_path)")
+
                    
                 }else {
                     print("没有录音，但是依然结束它")
@@ -77,11 +84,21 @@ class RecordManager {
     func play(index: Int) {
             do {
 //                player = try AVAudioPlayer(contentsOf: URL(fileURLWithPath: file_path!))
+                
                   player = try AVAudioPlayer(contentsOf: URL(fileURLWithPath: recorders[index]))
+
                 print("歌曲长度：\(player!.duration)")
                 player!.play()
             } catch let err {
                 print("播放失败:\(err.localizedDescription)")
             }
         }
+    //停止播放
+    func stopPlay() {        
+        if let player = self.player{
+            if player.isPlaying{
+                player.stop()
+            }
+        }
+    }
 }
